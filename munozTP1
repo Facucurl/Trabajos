@@ -1,0 +1,117 @@
+import os
+from time import sleep
+from colorama import init, Fore, Back
+init(autoreset=True)
+
+def limpiar_pantalla():
+    os.system('cls' if os.name == 'nt'  else 'clear')
+    
+def validar_texto(texto, mensaje_error):
+    ''' No valida la entrada si es un string vacio
+        Argumentos 
+            texto(str): El texto a validar
+            mensaje_error(str): El mensaje de error a mostrar si la validación falla
+        Return
+            texto (str) validado si cumple con las condiciones, sino solicita que se ingrese nuevamente
+        '''
+    while not texto:
+        print(Fore.RED +mensaje_error)
+        texto = input("Ingrese nuevamente: ").strip().lower()
+    return texto
+
+        
+print(Back.BLUE+"="*140)
+print(Back.BLUE+'Bienvenidos al Programa  de gestion de estudiantes'.center(140))
+print(Back.BLUE+"="*140)
+print()
+print ('Iniciando....')
+for i in range(3, 0, -1):
+    print(i , end="\r")
+    sleep(1)  
+
+limpiar_pantalla()
+estudiantes=[]
+'''Ingreso de Estudiantes'''
+print()
+print(Back.BLUE+"="*140)
+print(Back.BLUE+'Ingreso de Estudiantes '.center(140))
+print(Back.BLUE+"="*140)
+print()
+
+while True:
+    condicion = input('Desea agregar un nuevo estudiantes Si/No: ').lower()
+    print(condicion)
+    if condicion == 'si':
+        estudiante = {}
+        estudiante['nombre'] = validar_texto(input('Ingrese el nombre del Estudiante: ').strip().lower(),'El campo no puede estar vacio')
+        estudiante['apellido'] = validar_texto(input('Ingrese el apellido del Estudiante: ').strip().lower(),'El campo no puede estar vacio')
+        estudiantes.append(estudiante)
+    elif condicion == 'no':
+        break
+    else:
+        print ('Debe ingresar SI o NO')
+
+
+'''Carga de Notas'''
+print()
+print(Back.BLUE+"="*20)
+print(Back.BLUE+'Carga de notas'.center(20))
+print(Back.BLUE+"="*20)
+print()
+for estudiante in estudiantes:
+    print()
+    print(f'Estudiante: {estudiante['nombre'].title()} {estudiante['apellido'].title()}')
+    while True:
+        try:
+            estudiante['nota1'] =int(input('Ingrege la nota 1:'))
+            if 1<= estudiante['nota1'] <=10:
+                break
+            else: 
+                print('La nota ingresada debe ser un numero entre 1 y 10')
+        except ValueError:
+                print("Por favor, ingrese un número válido.")
+
+    while True:
+        try:
+            estudiante['nota2'] =int(input('Ingrege la nota 2:'))
+            if 1<= estudiante['nota2'] <=10:
+                break
+            else: 
+                print('La nota ingresada debe ser un numero entre 1 y 10')
+        except ValueError:
+                print("Por favor, ingrese un número válido.")
+    while True:
+        try:
+            estudiante['nota3'] =int(input('Ingrege la nota 3:'))
+            if 1<= estudiante['nota3'] <=10:
+                break
+            else:
+                print('La nota ingresada debe ser un numero entre 1 y 10')
+        except ValueError:
+                print("Por favor, ingrese un número válido.")
+                
+    estudiante['promedio']=(estudiante['nota1']+estudiante['nota2']+estudiante['nota3'])/3 #redondear a 2 decimales
+    if estudiante['promedio']>=6:
+        estudiante['condicion']= 'aprobado'
+    else:
+        estudiante['condicion']= 'desaprobado'
+
+
+'''Evaluacion Final'''
+print()
+print(Back.BLUE+"="*20)
+print(Back.BLUE+'Evaluacion'.center(20))
+print(Back.BLUE+"="*20)
+print()
+for estudiante in estudiantes:
+    print(f'Estudiante: {estudiante['nombre'].title()} {estudiante['apellido'].title()}, promedio: {estudiante['promedio']:.2f}, {estudiante['condicion'].title()}')
+
+'''Listado Final'''
+print()
+print(Back.BLUE+"="*140)
+print(Back.BLUE+'Informe Final'.center(140))
+print(Back.BLUE+"="*140)
+print()
+print(f"{'Nombre':15}{'Apellido':15}{'Nota 1':10}{'Nota 2':10}{'Nota 3':10}{'Promedio':10}{'Condicion':15}")
+for estudiante in estudiantes:
+    print(f'{estudiante['nombre'].title():<15}{estudiante['apellido'].title():<15}{estudiante['nota1']:<10}{estudiante['nota2']:<10}{estudiante['nota3']:<10}{estudiante['promedio']:<10.2f}{estudiante['condicion'].title():15}')
